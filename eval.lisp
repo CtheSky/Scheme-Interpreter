@@ -75,11 +75,21 @@
 	(list '* #'*)
 	(list '/ #'/)
 	))
+
+;; true and false
+(defun true-p (x) (not (equal x nil)))
+(defun false-p (x) (equal x nil))
+
+;;setup initial envrionment
 (defparameter *env*
   (extend-environment 
    (primitive-procedure-names)  
    (primitive-procedure-objects)
    *the-empty-environment*))
+(ndefine-variable 'true t *env*)
+(ndefine-variable 'false nil *env*)
+
+
 ;;application
 (defun application-p (exp) (consp exp))
 (defun operator (exp) (car exp))
@@ -107,7 +117,6 @@
 	   args
 	   (procedure-environment proc))))
 	(t
-	 (format t "~a~%" (list proc))
 	 (error "Unknown procedure type: EXECUTE-APPLICATION" proc))))
 
 
