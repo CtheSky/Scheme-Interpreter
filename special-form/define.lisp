@@ -13,8 +13,6 @@
   (let ((var (definition-variable exp))
 	(vproc (analyze (definition-value exp))))
     #'(lambda (env)
-	(format t "def-var ~a ~%" var)  
-	(format t "def-vproc ~a ~%" (funcall vproc env))
 	(ndefine-variable var (funcall vproc env) env)
 	'ok)))
 (put-analyze-func 'define #'analyze-definition)
