@@ -1,6 +1,3 @@
-(load "eval.lisp")
-(load ".//test//framework.lisp")
-
 (deftest test-cond ()
   (let ((env *env*))
     ;;check single clause
@@ -12,5 +9,5 @@
     ;;check default value when none of clauses are executed
     (check (equal (meval '(cond (false 1) (false 0)) env) nil))))
 
-;; trigger test
-(test-cond)
+;;register test
+(put-test-func 'test-cond #'test-cond)

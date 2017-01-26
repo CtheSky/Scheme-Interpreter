@@ -1,6 +1,3 @@
-(load "eval.lisp")
-(load ".//test//framework.lisp")
-
 (deftest test-define ()
   (let* ((env (extend-environment '(a b) '(1 2) *env*)))
     ;;check define variable
@@ -10,5 +7,5 @@
     (meval '(define (inc x) (+ x 1)) env)
     (check (= (meval '(inc 1) env) 2))))
 
-;; trigger test
-(test-define)
+;;register test
+(put-test-func 'test-define #'test-define)

@@ -1,6 +1,3 @@
-(load "eval.lisp")
-(load ".//test//framework.lisp")
-
 (deftest test-or ()
   (let ((env (extend-environment '() '() *env*)))
     ;;check no exp
@@ -17,5 +14,5 @@
     (check (= 1 (meval 'a env)))
     (check (null (meval 'b env)))))
 
-;; trigger test
-(test-or)
+;;register test
+(put-test-func 'test-or #'test-or)

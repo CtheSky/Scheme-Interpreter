@@ -1,6 +1,3 @@
-(load "framework.lisp")
-(load "..//environment.lisp")
-
 (deftest test-environment ()
   (let* ((inner (extend-environment '(a) '(0) *the-empty-environment*))
 	 (outer (extend-environment '(a b) '(1 2) inner)))
@@ -20,5 +17,5 @@
       (null (lookup-variable-value 'c inner))
       (= (lookup-variable-value 'c outer)))))
 
-;; trigger test
-(test-environment)
+;;register test
+(put-test-func 'test-environment #'test-environment)

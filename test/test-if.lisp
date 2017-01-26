@@ -1,6 +1,3 @@
-(load "eval.lisp")
-(load ".//test//framework.lisp")
-
 (deftest test-if ()
   (let* ((env *env*))
     ;;check true value
@@ -15,5 +12,5 @@
      *env*)
     (check (= (meval 'a *env*) 1))))
 
-;; trigger test
-(test-if)
+;;register test
+(put-test-func 'test-if #'test-if)

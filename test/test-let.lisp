@@ -1,6 +1,3 @@
-(load "eval.lisp")
-(load ".//test//framework.lisp")
-
 (deftest test-let ()
   (let ((env (extend-environment '(a b c) '(0 0 0) *env*)))
     (meval 
@@ -9,5 +6,5 @@
      env)
     (check (= (meval 'c env) 7))))
 
-;; trigger test
-(test-let)
+;;register test
+(put-test-func 'test-let #'test-let)
