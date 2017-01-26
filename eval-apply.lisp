@@ -5,7 +5,7 @@
 (dolist (path (directory ".//special-form//*.lisp"))
 	   (load path)) 
 
-;;;meval
+;;; M-Eval
 ;;;  receives an expression and environment, eval the expr in given env
 (defun meval (exp env)
   (funcall (analyze exp) env))
@@ -34,6 +34,33 @@
 (defun variable-p (exp) (symbolp exp))
 (defun analyze-variable (exp)
   (lambda (env) (lookup-variable-value exp env)))
+
+
+
+;;; M-Apply
+;;;  receives a procedure application, return corresponding lambda function 
+(defun analyze-application (exp)
+  (let ((fproc (analyze (operator exp)))
+	(aprocs (map 'list #'analyze (operands exp))))
+    (lambda (env)
+      (execute-application
+       (funcall fproc env)
+       (map 'list 
+	    #'(lambda (aproc) (funcall aproc env))
+	    aprocs)))))
+
+(defun execute-application (proc args)
+  (cond ((primitive-procedure-p proc)
+	 (apply-primitive-procedure proc args))
+	((compound-procedure-p proc)
+	 (funcall 
+	  (procedure-body proc)
+	  (extend-environment
+	   (procedure-parameters proc)
+	   args
+	   (procedure-environment proc))))
+	(t
+	 (error "Unknown procedure type: EXECUTE-APPLICATION" proc))))
 
 ;;;procedure
 (defun make-procedure (parameters body env)
@@ -94,30 +121,3 @@
 (defun application-p (exp) (consp exp))
 (defun operator (exp) (car exp))
 (defun operands (exp) (cdr exp))
-
-;;;mapply
-(defun analyze-application (exp)
-  (let ((fproc (analyze (operator exp)))
-	(aprocs (map 'list #'analyze (operands exp))))
-    (lambda (env)
-      (execute-application
-       (funcall fproc env)
-       (map 'list 
-	    #'(lambda (aproc) (funcall aproc env))
-	    aprocs)))))
-
-(defun execute-application (proc args)
-  (cond ((primitive-procedure-p proc)
-	 (apply-primitive-procedure proc args))
-	((compound-procedure-p proc)
-	 (funcall 
-	  (procedure-body proc)
-	  (extend-environment
-	   (procedure-parameters proc)
-	   args
-	   (procedure-environment proc))))
-	(t
-	 (error "Unknown procedure type: EXECUTE-APPLICATION" proc))))
-
-
-	  
