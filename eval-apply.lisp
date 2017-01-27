@@ -92,6 +92,7 @@
 	(list 'cons #'cons)
 	(list 'equal #'equal)
 	(list 'null? #'null)
+	(list 'remainder #'rem)
 	(list '= #'=)
 	(list '> #'>)
 	(list '>= #'>=)
